@@ -27,6 +27,8 @@ class LLNWAuth(requests.auth.AuthBase):
         timestamp = str(int(round(time.time() * 1000)))
         if request_body == None:
             request_body = ''
+        if type(request_body) is bytes:
+            request_body = str(request_body, 'utf-8')
         data = f'{method}{auth_url}{query_string}{timestamp}{request_body}'
         token = hmac.new(binascii.unhexlify(self.api_key), msg = data.encode('utf-8'), digestmod = hashlib.sha256).hexdigest()
 
